@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<!-- saved from url=(0090)file:///C:/Users/Lua/Downloads/Diagn%C3%B3stico%20R%C3%A1pido%20-%20Drones%20Solution.html -->
+<html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnóstico Rápido - Drones Solution</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #f1f5f9;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* HEADER */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid #38bdf8;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: #38bdf8;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #cbd5e1;
+            margin-bottom: 1rem;
+        }
+
+        .header-badge {
+            display: inline-block;
+            background-color: #38bdf8;
+            color: #0f172a;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* SECTION CARDS */
+        .section {
+            background-color: #1e293b;
+            border-left: 4px solid #38bdf8;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(56, 189, 248, 0.1);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            gap: 1rem;
+        }
+
+        .section-icon {
+            font-size: 2rem;
+        }
+
+        .section h2 {
+            font-size: 1.5rem;
+            color: #38bdf8;
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .section p {
+            font-size: 0.95rem;
+            color: #cbd5e1;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        /* CHECKBOX ITEMS */
+        .checkbox-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1.2rem;
+            padding: 1rem;
+            background-color: #334155;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .checkbox-item:hover {
+            background-color: #475569;
+            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.15);
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #38bdf8;
+            margin-right: 1rem;
+            margin-top: 0.2rem;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .checkbox-item input[type="checkbox"]:checked + label {
+            color: #38bdf8;
+            font-weight: 600;
+        }
+
+        .checkbox-item label {
+            flex: 1;
+            font-size: 0.95rem;
+            color: #cbd5e1;
+            cursor: pointer;
+            line-height: 1.4;
+        }
+
+        .scale-label {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-top: 0.3rem;
+            font-style: italic;
+        }
+
+        /* SCALE INDICATOR */
+        .scale-inline {
+            display: inline-flex;
+            gap: 0.3rem;
+            margin-left: 0.5rem;
+        }
+
+        .scale-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #475569;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0f172a;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .scale-dot:hover {
+            background-color: #38bdf8;
+            transform: scale(1.2);
+        }
+
+        .scale-dot.selected {
+            background-color: #38bdf8;
+            color: #0f172a;
+        }
+
+        /* SUMMARY BOX */
+        .summary {
+            background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
+            color: #0f172a;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 12px 40px rgba(56, 189, 248, 0.25);
+        }
+
+        .summary h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .summary-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .summary-item {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 1rem;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .summary-number {
+            font-size: 2rem;
+            font-weight: 700;
+            display: block;
+        }
+
+        .summary-label {
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+            opacity: 0.9;
+        }
+
+        /* RESULT ALERT */
+        .result-alert {
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+            border-left: 4px solid #fbbf24;
+            background-color: #78350f;
+        }
+
+        .result-alert.show {
+            display: block;
+        }
+
+        .result-alert.high {
+            border-left-color: #f87171;
+            background-color: #7f1d1d;
+        }
+
+        .result-alert h4 {
+            color: #fca5a5;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .result-alert.high h4 {
+            color: #fca5a5;
+        }
+
+        .result-alert p {
+            color: #fedede;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* BUTTONS */
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        button {
+            padding: 0.8rem 2rem;
+            font-size: 0.95rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #38bdf8;
+            color: #0f172a;
+        }
+
+        .btn-primary:hover {
+            background-color: #0ea5e9;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(56, 189, 248, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: #475569;
+            color: #f1f5f9;
+        }
+
+        .btn-secondary:hover {
+            background-color: #64748b;
+        }
+
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid #38bdf8;
+            color: #94a3b8;
+        }
+
+        .footer h3 {
+            color: #38bdf8;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .footer p {
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* SCORE TRACKER */
+        .score-tracker {
+            background-color: #0f172a;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            border: 1px solid #38bdf8;
+        }
+
+        .score-tracker h4 {
+            color: #38bdf8;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .score-bar {
+            width: 100%;
+            height: 24px;
+            background-color: #334155;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid #475569;
+        }
+
+        .score-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #38bdf8 0%, #0ea5e9 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .section {
+                padding: 1.5rem;
+            }
+
+            .section h2 {
+                font-size: 1.2rem;
+            }
+
+            .summary-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <h1>🎯 Diagnóstico Rápido</h1>
+            <p>Identifique oportunidades de otimização na sua operação</p>
+            <span class="header-badge">2 minutos de avaliação</span>
+        </div>
+
+        <!-- SCORE TRACKER -->
+        <div class="score-tracker">
+            <h4>Seu Score de Oportunidade:</h4>
+            <div class="score-bar">
+                <div class="score-fill" id="scoreFill" style="width: 91%;">91%</div>
+            </div>
+            <p style="margin-top: 0.8rem; font-size: 0.85rem; color: #cbd5e1;" id="scoreText">Marque os itens que se aplicam à sua empresa</p>
+        </div>
+
+        <!-- RESULT ALERT -->
+        <div class="result-alert" id="resultAlert"></div>
+
+        <!-- FORM -->
+        <form id="diagnosticoForm">
+            <!-- SEÇÃO A: PRAZO E PRODUTIVIDADE -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-icon">⏱️</span>
+                    <h2>Prazo e Produtividade de Campo</h2>
+                </div>
+                <p>Marque o nível em que cada situação ocorre em sua empresa (0 = Não se aplica | 4 = Crítico)</p>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="a1" class="scale-selector" data-section="a" data-min="2">
+                    <label for="a1">
+                        Levantamentos/inspeções atrasam por acesso difícil, deslocamento ou burocracia
+                        <div class="scale-inline" data-for="a1">
+                            <span class="scale-dot" data-value="0">0</span>
+                            <span class="scale-dot" data-value="1">1</span>
+                            <span class="scale-dot" data-value="2">2</span>
+                            <span class="scale-dot selected" data-value="3">3</span>
+                            <span class="scale-dot" data-value="4">4</span>
+                        </div>
+                        <div class="scale-label" id="a1-value">Nível: 3</div>
+                    </label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="a2" class="scale-selector" data-section="a" data-min="2">
+                    <label for="a2">
+                        Meu time perde tempo voltando ao campo para "pegar detalhe que faltou"
+                        <div class="scale-inline" data-for="a2">
+                            <span class="scale-dot" data-value="0">0</span>
+                            <span class="scale-dot" data-value="1">1</span>
+                            <span class="scale-dot" data-value="2">2</span>
+                            <span class="scale-dot" data-value="3">3</span>
+                            <span class="scale-dot" data-value="4">4</span>
+                        </div>
+                        <div class="scale-label" id="a2-value">Nível: não selecionado</div>
+                    </label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="a3" class="scale-selector" data-section="a" data-min="2">
+                    <label for="a3">
+                        A obra/projeto depende de informação de campo para destravar frentes
+                        <div class="scale-inline" data-for="a3">
+                            <span class="scale-dot" data-value="0">0</span>
+                            <span class="scale-dot" data-value="1">1</span>
+                            <span class="scale-dot" data-value="2">2</span>
+                            <span class="scale-dot" data-value="3">3</span>
+                            <span class="scale-dot" data-value="4">4</span>
+                        </div>
+                        <div class="scale-label" id="a3-value">Nível: não selecionado</div>
+                    </label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="a4" class="scale-selector" data-section="a" data-min="2">
+                    <label for="a4">
+                        Preciso de medições/volumes/áreas com rapidez para tomada de decisão
+                        <div class="scale-inline" data-for="a4">
+                            <span class="scale-dot" data-value="0">0</span>
+                            <span class="scale-dot" data-value="1">1</span>
+                            <span class="scale-dot" data-value="2">2</span>
+                            <span class="scale-dot" data-value="3">3</span>
+                            <span class="scale-dot" data-value="4">4</span>
+                        </div>
+                        <div class="scale-label" id="a4-value">Nível: não selecionado</div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- SEÇÃO B: QUALIDADE DO DADO -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-icon">📊</span>
+                    <h2>Qualidade do Dado e Padronização</h2>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="b1" class="scale-selector" data-section="b" data-min="2">
+                    <label for="b1">
+                        Cada fornecedor entrega de um jeito (formato, padrão, nomenclatura)
+                        <div class="scale-inline" data-for="b1">
+                            <span class="scale-dot" data-value="0">0</span>
+                            <span class="scale-dot" data-value="1">1</span>
+                            <span class="scale-dot" data-value="2">2</span>
+                            <span class="scale-dot" data-value="3">3</span>
+                            <span class="scale-dot" data-value="4">4</span>
+                        </div>
+                        <div class="scale-label" id="b1-value">Nível: não selecionado</div>
+                    </label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="b2" class="scale-selector" data-section="b" data-min="2">
+                    <label for="b2">
+                        Os entregáveis chegam sem critérios claros de aceitação
+                        <div class="scale-inline" data-for="b2">
+                            <span class="scale-dot" data-value="0">0</span>
+                            <span class="scale-dot" data-value="1">1</span>
+                            <span class="scale-dot" data-value="2">2</span>
+                            <span class="scale-dot" data-value="3">3</span>
+                            <span class="scale-dot" data-value="4">4</span>
+                        </div>
+                        <div class="scale-label" id="b2-value">Nível: não selecionado</div>
+                    </label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="b3" class="scale-selector" data-section="b" data-min="2">
+                    <label for="b3">
+                        O dado não "encaixa" no meu fluxo (CAD/GIS/relatórios)
+                        <div class="scale-inline" data-for="b3">
+                            <span class="scale-dot" data-value="0">0</span>
+                            <span class="scale-dot" data-value="1">1</span>
+                            <span class="scale-dot" data-value="2">2</span>
+                            <span class="scale-dot" data-value="3">3</span>
+                            <span class="scale-dot" data-value="4">4</span>
+                        </div>
+                        <div class="scale-label" id="b3-value">Nível: não selecionado</div>
+                    </label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="b4" class="scale-selector" data-section="b" data-min="2">
+                    <label for="b4">
+                        Preciso comparar evolução (antes/depois) de forma consistente
+                        <div class="scale-inline" data-for="b4">
+                            <span class="scale-dot" data-value="0">0</span>
+                            <span class="scale-dot" data-value="1">1</span>
+                            <span class="scale-dot" data-value="2">2</span>
+                            <span class="scale-dot" data-value="3">3</span>
+                            <span class="scale-dot" data-value="4">4</span>
+                        </div>
+                        <div class="scale-label" id="b4-value">Nível: não selecionado</div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- SEÇÃO C: RASTREABILIDADE -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-icon">🔍</span>
+                    <h2>Rastreabilidade, Evidência e Compliance</h2>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="c1" class="scale-selector" data-section="c" data-min="3">
+                    <label for="c1">
+                        Preciso de evidências georreferenciadas para auditoria, contratos ou medição
+                        <div class="scale-inline" data-for="c1">
+                            <span class="scale-dot" data-value="0">0</span>
+                            <span class="scale-dot" data-value="1">1</span>
+                            <span class="scale-dot" data-value="2">2</span>
+                            <span class="scale-dot" data-value="3">3</span>
+                            <span class="scale-dot" data-value="4">4</span>
+                        </div>
+                        <div class="scale-label" id="c1-value">Nível: não selecionado</div>
+                    </label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="c2" class="scale-selector" data-section="c" data-min="3">
+                    <label for="c2">
+                        Há risco de questionamento do que foi executado
+                        <div class="scale-inline" data-for="c2">
+                            <span class="scale-dot" data-value="0">0</span>
+                            <span class="scale-dot" data-value="1">1</span>
+                            <span class="scale-dot" data-value="2">2</span>
+                            <span class="scale-dot" data-value="3">3</span>
+                            <span class="scale-dot" data-value="4">4</span>
+                        </div>
+                        <div class="scale-label" id="c2-value">Nível: não selecionado</div>
+                    </label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="c3" class="scale-selector" data-section="c" data-min="3">
+                    <label for="c3">
+                        Tenho necessidade de relatórios periódicos (semanal/mensal) com padrão fixo
+                        <div class="scale-inline" data-for="c3">
+                            <span class="scale-dot" data-value="0">0</span>
+                            <span class="scale-dot" data-value="1">1</span>
+                            <span class="scale-dot" data-value="2">2</span>
+                            <span class="scale-dot" data-value="3">3</span>
+                            <span class="scale-dot" data-value="4">4</span>
+                        </div>
+                        <div class="scale-label" id="c3-value">Nível: não selecionado</div>
+                    </label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="c4" class="scale-selector" data-section="c" data-min="3">
+                    <label for="c4">
+                        Comunicação com stakeholders exige relatório visual e objetivo
+                        <div class="scale-inline" data-for="c4">
+                            <span class="scale-dot" data-value="0">0</span>
+                            <span class="scale-dot" data-value="1">1</span>
+                            <span class="scale-dot" data-value="2">2</span>
+                            <span class="scale-dot" data-value="3">3</span>
+                            <span class="scale-dot" data-value="4">4</span>
+                        </div>
+                        <div class="scale-label" id="c4-value">Nível: não selecionado</div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- SEÇÃO D: SEGURANÇA -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-icon">🛡️</span>
+                    <h2>Segurança em Campo (SSMA)</h2>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="d1" class="scale-selector" data-section="d" data-min="4">
+                    <label for="d1">
+                        Há atividades em altura, áreas instáveis ou proximidade de equipamentos energizados
+                        <div class="scale-inline" data-for="d1">
+                            <span class="scale-dot" data-value="0">0</span>
+                            <span class="scale-dot" data-value="1">1</span>
+                            <span class="scale-dot" data-value="2">2</span>
+                            <span class="scale-dot" data-value="3">3</span>
+                            <span class="scale-dot" data-value="4">4</span>
+                        </div>
+                        <div class="scale-label" id="d1-value">Nível: não selecionado</div>
+                    </label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="d2" class="scale-selector" data-section="d" data-min="4">
+                    <label for="d2">
+                        As inspeções expõem pessoas a risco desnecessário
+                        <div class="scale-inline" data-for="d2">
+                            <span class="scale-dot" data-value="0">0</span>
+                            <span class="scale-dot" data-value="1">1</span>
+                            <span class="scale-dot" data-value="2">2</span>
+                            <span class="scale-dot" data-value="3">3</span>
+                            <span class="scale-dot" data-value="4">4</span>
+                        </div>
+                        <div class="scale-label" id="d2-value">Nível: não selecionado</div>
+                    </label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="d3" class="scale-selector" data-section="d" data-min="4">
+                    <label for="d3">
+                        Preciso reduzir permanência de equipe em campo sem perder qualidade
+                        <div class="scale-inline" data-for="d3">
+                            <span class="scale-dot" data-value="0">0</span>
+                            <span class="scale-dot" data-value="1">1</span>
+                            <span class="scale-dot" data-value="2">2</span>
+                            <span class="scale-dot" data-value="3">3</span>
+                            <span class="scale-dot" data-value="4">4</span>
+                        </div>
+                        <div class="scale-label" id="d3-value">Nível: não selecionado</div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- SEÇÃO E: CASOS TÍPICOS -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-icon">📋</span>
+                    <h2>Casos Típicos (que se aplica?)</h2>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="e1" data-value="1">
+                    <label for="e1">Acompanhamento de avanço físico / controle de obra</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="e2" data-value="1">
+                    <label for="e2">As-built e documentação do executado</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="e3" data-value="1">
+                    <label for="e3">Volumetria (corte/aterro/estoques)</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="e4" data-value="1">
+                    <label for="e4">Mapeamento/levantamento para planejamento e projeto</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="e5" data-value="1">
+                    <label for="e5">Inspeções visuais para qualidade/SSMA/compliance</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="e6" data-value="1">
+                    <label for="e6">Inspeções termográficas (ex.: solar/industrial)</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="e7" data-value="1">
+                    <label for="e7">Monitoramento recorrente (mensal/semanal) com comparativo</label>
+                </div>
+            </div>
+
+            <!-- SUMMARY -->
+            <div class="summary">
+                <h3>📈 Seu Potencial de Impacto</h3>
+                <div class="summary-content">
+                    <div class="summary-item">
+                        <span class="summary-number" id="countHigh">0</span>
+                        <span class="summary-label">Áreas Críticas (4)</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-number" id="countMedium">1</span>
+                        <span class="summary-label">Áreas Altas (3)</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-number" id="countLow">0</span>
+                        <span class="summary-label">Seções Críticas</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-number" id="countCases">0</span>
+                        <span class="summary-label">Casos Aplicáveis</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BUTTONS -->
+            <div class="button-group">
+                <button type="button" class="btn-secondary" onclick="resetForm()">Limpar Tudo</button>
+                <button type="button" class="btn-primary" onclick="generateResult()">Ver Meu Resultado</button>
+            </div>
+        </form>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <h3>Próximo Passo</h3>
+            <p>Se você marcou <strong>3 ou mais itens com nível 3–4</strong>, sua operação tem potencial significativo de otimização. <br>
+            <strong>Agende uma conversa de 15 minutos</strong> conosco para mapear escopo e estimar ganho em prazo, rastreabilidade e segurança.</p>
+            <p style="margin-top: 1.5rem; font-size: 0.85rem;">
+                <strong>Drones Solution</strong> • Soluções em Levantamentos, Inspeções e Documentação Georreferenciada
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let scaleValues = {};
+        let checkedItems = {};
+
+        // Initialize scale dots
+        document.querySelectorAll('.scale-dot').forEach(dot => {
+            dot.addEventListener('click', function() {
+                const itemId = this.parentElement.getAttribute('data-for');
+                const value = this.getAttribute('data-value');
+                
+                // Remove previous selection
+                document.querySelectorAll(`[data-for="${itemId}"] .scale-dot`).forEach(d => {
+                    d.classList.remove('selected');
+                });
+                
+                // Set new selection
+                this.classList.add('selected');
+                scaleValues[itemId] = parseInt(value);
+                document.getElementById(itemId + '-value').textContent = `Nível: ${value}`;
+                
+                // Check the checkbox
+                document.getElementById(itemId).checked = true;
+                checkedItems[itemId] = true;
+                
+                updateScore();
+            });
+        });
+
+        // Regular checkbox handling for cases
+        document.querySelectorAll('input[type="checkbox"][data-value]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    checkedItems[this.id] = true;
+                } else {
+                    delete checkedItems[this.id];
+                }
+                updateScore();
+            });
+        });
+
+        function updateScore() {
+            let score = 0;
+            let maxScore = 0;
+            let countHigh = 0;
+            let countMedium = 0;
+            let countLow = 0;
+            let countCases = 0;
+
+            // Count scale values
+            Object.values(scaleValues).forEach(value => {
+                score += value;
+                maxScore += 4;
+                
+                if (value === 4) countHigh++;
+                else if (value === 3) countMedium++;
+                else if (value >= 2) countLow++;
+            });
+
+            // Count cases
+            document.querySelectorAll('input[type="checkbox"][data-value]').forEach(checkbox => {
+                if (checkbox.checked) countCases++;
+                maxScore += 1;
+                score += 1;
+            });
+
+            let percentage = maxScore > 0 ? Math.round((score / maxScore) * 100) : 0;
+            document.getElementById('scoreFill').style.width = percentage + '%';
+            document.getElementById('scoreFill').textContent = percentage + '%';
+            document.getElementById('countHigh').textContent = countHigh;
+            document.getElementById('countMedium').textContent = countMedium;
+            document.getElementById('countLow').textContent = countLow;
+            document.getElementById('countCases').textContent = countCases;
+
+            // Check if should show alert
+            if (countHigh + countMedium >= 3 || (countHigh > 0 && countMedium > 1)) {
+                showAlert(countHigh, countMedium, countLow);
+            }
+        }
+
+        function showAlert(high, medium, low) {
+            const alertEl = document.getElementById('resultAlert');
+            let message = '';
+            let isHigh = high > 0;
+
+            if (isHigh) {
+                alertEl.className = 'result-alert show high';
+                message = `<h4>⚠️ Áreas Críticas Identificadas</h4>
+                          <p>Você marcou <strong>${high} áreas com nível 4 (crítico)</strong> e <strong>${medium} com nível 3 (alto)</strong>. 
+                          Esta é exatamente a situação em que entregáveis padronizados, rastreáveis e ágeis fazem diferença real. 
+                          <strong>Vale muito a pena uma conversa com a gente.</strong></p>`;
+            } else if (high + medium >= 3) {
+                alertEl.className = 'result-alert show';
+                message = `<h4>✅ Oportunidade Identificada</h4>
+                          <p>Você marcou <strong>${medium} áreas com potencial de otimização</strong>. 
+                          Vamos avaliar onde o impacto será maior e qual é o melhor caminho para sua operação.</p>`;
+            }
+
+            alertEl.innerHTML = message;
+        }
+
+        function generateResult() {
+            const totalItems = Object.keys(scaleValues).length + Object.keys(checkedItems).filter(k => k.startsWith('e')).length;
+            
+            if (totalItems === 0) {
+                alert('Por favor, marque pelo menos alguns itens para gerar seu resultado.');
+                return;
+            }
+
+            updateScore();
+            alert('Resultado gerado! Envie esta página para: contato@dronessolution.com.br ou agende uma conversa de 15 minutos conosco. 🚀');
+        }
+
+        function resetForm() {
+            scaleValues = {};
+            checkedItems = {};
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            document.querySelectorAll('.scale-dot').forEach(d => d.classList.remove('selected'));
+            document.querySelectorAll('[id$="-value"]').forEach(el => el.textContent = 'Nível: não selecionado');
+            document.getElementById('resultAlert').classList.remove('show', 'high');
+            document.getElementById('scoreFill').style.width = '0%';
+            document.getElementById('scoreFill').textContent = '0%';
+            document.getElementById('countHigh').textContent = '0';
+            document.getElementById('countMedium').textContent = '0';
+            document.getElementById('countLow').textContent = '0';
+            document.getElementById('countCases').textContent = '0';
+        }
+
+        // Initial score calculation
+        updateScore();
+    </script>
+
+
+</body></html>
